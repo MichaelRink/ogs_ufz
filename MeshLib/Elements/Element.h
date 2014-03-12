@@ -201,9 +201,6 @@ protected:
 	 */
 	unsigned _value;
 	Element** _neighbors;
-
-private:
-
 }; /* class */
 
 } /* namespace */
