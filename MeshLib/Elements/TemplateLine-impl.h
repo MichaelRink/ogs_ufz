@@ -24,7 +24,6 @@ TemplateLine<NNODES,CELLLINETYPE>::TemplateLine(std::array<Node*, NNODES> const&
 
 	_neighbors = new Element*[2];
 	std::fill_n(_neighbors, 2, nullptr);
-
 	this->_length = this->computeVolume();
 }
 
@@ -33,6 +32,8 @@ TemplateLine<NNODES,CELLLINETYPE>::TemplateLine(Node* nodes[NNODES], unsigned va
 	: Element(value, id)
 {
 	_nodes = nodes;
+	_neighbors = new Element*[2];
+	std::fill_n(_neighbors, 2, nullptr);
 	this->_length = this->computeVolume();
 }
 
@@ -43,6 +44,10 @@ TemplateLine<NNODES,CELLLINETYPE>::TemplateLine(const TemplateLine<NNODES,CELLLI
 	_nodes = new Node*[NNODES];
 	for (unsigned k(0); k<NNODES; k++)
 		_nodes[k] = line._nodes[k];
+
+	_neighbors = new Element*[2];
+	_neighbors[0] = line._neighbors[0];
+	_neighbors[1] = line._neighbors[1];
 	_length = line.getLength();
 }
 
@@ -57,6 +62,15 @@ ElementErrorCode TemplateLine<NNODES,CELLLINETYPE>::validate() const
 	error_code[ElementErrorFlag::ZeroVolume] = this->hasZeroVolume();
 	return error_code;
 }
+
+template <unsigned NNODES, CellType CELLLINETYPE>
+const unsigned TemplateLine<NNODES, CELLLINETYPE>::dimension = 1u;
+
+template <unsigned NNODES, CellType CELLLINETYPE>
+const unsigned TemplateLine<NNODES, CELLLINETYPE>::n_all_nodes = NNODES;
+
+template <unsigned NNODES, CellType CELLLINETYPE>
+const unsigned TemplateLine<NNODES, CELLLINETYPE>::n_base_nodes = 2u;
 
 } // namespace MeshLib
 
